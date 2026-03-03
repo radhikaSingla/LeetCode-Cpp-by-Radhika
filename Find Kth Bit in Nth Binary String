@@ -1,0 +1,31 @@
+// LeetCode 1545: Find Kth Bit in Nth Binary String
+// Difficulty: Medium
+// Topic: Recursion, Divide and Conquer, Math
+// Approach:
+// Use the recursive structure of Si.
+// Compute mid = (2^n) / 2.
+// If k == mid → '1'.
+// If k < mid → go left (same bit in prev string).
+// If k > mid → go right → invert corresponding bit.
+// Time Complexity: O(n)
+// Space Complexity: O(n)
+
+class Solution {
+public:
+    char findKthBit(int n, int k) {
+        if (n == 1) return '0';
+
+        int mid = 1 << (n - 1);   
+
+        if (k == mid) return '1';
+
+        if (k < mid)
+            return findKthBit(n - 1, k);
+
+        int mirror = (1 << n) - k;
+
+        char bit = findKthBit(n - 1, mirror);
+
+        return (bit == '0') ? '1' : '0';
+    }
+};
