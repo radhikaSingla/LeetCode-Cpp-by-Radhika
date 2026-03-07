@@ -1,0 +1,48 @@
+// LeetCode 1888: Minimum Number of Flips to Make Binary String Alternating
+// Difficulty: Medium
+// Topic: Sliding Window, String
+// Approach:
+// Duplicate the string to simulate all rotations.
+// Compare each window with two alternating patterns.
+// Maintain mismatch counts using sliding window.
+// Time Complexity: O(n)
+// Space Complexity: O(n)
+
+class Solution {
+public:
+    int minFlips(string s) {
+        int n = s.size();
+        int diff1 = 0, diff2 = 0;
+        int res = INT_MAX;
+        int l = 0;
+
+        for(int r = 0; r < 2*n; r++) {
+
+            char c = s[r % n];
+
+            char alt1 = (r % 2) ? '1' : '0';
+            char alt2 = (r % 2) ? '0' : '1';
+
+            if(c != alt1) diff1++;
+            if(c != alt2) diff2++;
+
+            if(r - l + 1 > n) {
+                char left = s[l % n];
+
+                char alt1_l = (l % 2) ? '1' : '0';
+                char alt2_l = (l % 2) ? '0' : '1';
+
+                if(left != alt1_l) diff1--;
+                if(left != alt2_l) diff2--;
+
+                l++;
+            }
+
+            if(r - l + 1 == n) {
+                res = min(res, min(diff1, diff2));
+            }
+        }
+
+        return res;
+    }
+};
